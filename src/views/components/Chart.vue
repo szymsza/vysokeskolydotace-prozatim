@@ -11,8 +11,9 @@ export default {
   name: "Chart",
   props: {
     name: String,
-    property: String,
-    data: Object
+    property: [String, Function],
+    data: Object,
+    width: Number
   },
   data() {
     return {
@@ -73,7 +74,7 @@ export default {
       }
 
       // eslint-disable-next-line
-      var formatter = new google.visualization.NumberFormat({
+      let formatter = new google.visualization.NumberFormat({
         decimalSymbol: ",",
         groupingSymbol: " ",
         fractionDigits: 0
@@ -82,7 +83,7 @@ export default {
       this.chartData = GoogleCharts.api.visualization.arrayToDataTable(table);
       formatter.format(this.chartData, 1);
 
-      var view = new GoogleCharts.api.visualization.DataView(this.chartData);
+      let view = new GoogleCharts.api.visualization.DataView(this.chartData);
       view.setColumns([
         0,
         1,
@@ -96,7 +97,10 @@ export default {
       ]);
 
       let options = {
-        width: document.querySelector("body").offsetWidth / 2 - 50,
+        width:
+          (document.querySelector("body").offsetWidth / 100) *
+            (this.width ? this.width : 50) -
+          50,
         height: 500,
         legend: { position: "none" },
         vAxis: {

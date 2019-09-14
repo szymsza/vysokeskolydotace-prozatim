@@ -8,20 +8,21 @@
         >
           <chart
             @select="removeOption"
-            name="Počet projektů"
+            name="Počet projektů celkem"
             :data="selected"
             property="projects"
           />
           <chart
             @select="removeOption"
-            name="Peníze z projektů (tis. Kč)"
+            name="Peníze z projektů celkem (tis. Kč)"
             :data="selected"
             property="total"
           />
           <chart
             @select="removeOption"
-            name="Peněz na studenta a rok"
+            name="Peníze na studenta a rok"
             :data="selected"
+            :width="100"
             :property="
               item => {
                 return item.total / 10 / item.students;
