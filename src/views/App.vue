@@ -7,7 +7,11 @@
       :faculties="faculties"
       :selected="selected"
     />
-    <statistics v-if="showStatistics" />
+    <statistics
+      v-if="showStatistics"
+      :schools="schools"
+      :faculties="faculties"
+    />
     <main-content v-else :selected="selected" @remove-option="removeOption" />
     <v-overlay :value="loading" color="grey lighten-2" :opacity="1">
       <v-progress-circular

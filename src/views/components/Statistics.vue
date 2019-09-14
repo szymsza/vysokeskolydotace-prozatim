@@ -1,10 +1,8 @@
 <template>
   <v-content>
     <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
-        <h1>
-          Statistiky
-        </h1>
+      <v-row>
+        <v-row align="center" justify="center"> </v-row>
       </v-row>
     </v-container>
   </v-content>
@@ -12,7 +10,16 @@
 
 <script>
 export default {
-  name: "Statistics.vue"
+  name: "Statistics.vue",
+  props: {
+    schools: Object,
+    faculties: Object
+  },
+  data: () => ({}),
+  mounted() {
+    console.log(this.schools);
+  },
+  methods: {}
 };
 </script>
 

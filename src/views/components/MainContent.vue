@@ -18,23 +18,11 @@
             :data="selected"
             property="total"
           />
-          <chart
-            @select="removeOption"
-            name="Počet projektů"
-            :data="selected"
-            property="projects"
-          />
-          <chart
-            @select="removeOption"
-            name="Peníze z projektů (tis. Kč)"
-            :data="selected"
-            property="total"
-          />
         </v-row>
         <h1 v-else>
           Vyhledejte školu, fakultu nebo obor v políčku výše...
-        </h1>
-      </v-row>
+        </h1> </v-row
+      >;
     </v-container>
   </v-content>
 </template>
