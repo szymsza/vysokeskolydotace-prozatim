@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     selectOption(option) {
+      this.showStatistics = false;
       if (Object.keys(this.selected).length >= 15) return false;
 
       this.$set(this.selected, option.ico, option);
