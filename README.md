@@ -1,4 +1,4 @@
-# vysokeskolydotace-prozatim
+# Kam za vědou
 
 ## Project setup
 ```
