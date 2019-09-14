@@ -17,3 +17,31 @@ div[role=combobox]
 	.v-list-item
 		.v-list-item__action
 			margin: 0
+
+div.google-visualization-tooltip
+	border: 2px solid rgb(193, 193, 193)
+	width: auto !important
+	ul
+		padding: 0
+
+		li.google-visualization-tooltip-item
+			span
+				font-family: "Roboto", sans-serif !important
+
+			&:first-child
+				span
+					font-size: 14px
+					font-weight: 500
+					color: rgba(66, 66, 66) !important
+
+			&:last-child
+				span
+					display: block
+					&:first-child
+						font-size: 14px !important
+						color: rgb(117, 117, 117) !important
+
+					&:last-child
+						font-size: 24px !important
+						color: rgb(56, 113, 207) !important
+						font-weight: initial !important
