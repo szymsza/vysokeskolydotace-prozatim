@@ -38,7 +38,7 @@ export default {
   }),
   created() {
     // Schools
-    this.axios("https://api.myjson.com/bins/1f9ut9").then(res => {
+    this.axios("https://api.myjson.com/bins/i416t").then(res => {
       this.schools = res.data;
       this.loading--;
     });
