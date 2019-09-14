@@ -1,8 +1,7 @@
 <template>
   <v-app id="inspire">
     <navbar @select-option="selectOption" :selected="selected" />
-    <main-content />
-    {{ selected }}
+    <main-content :selected="selected" />
     <v-overlay :value="loading" color="grey lighten-2" :opacity="1">
       <v-progress-circular
         indeterminate
