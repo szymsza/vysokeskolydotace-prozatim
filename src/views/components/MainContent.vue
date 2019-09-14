@@ -18,11 +18,21 @@
             :data="selected"
             property="total"
           />
+          <chart
+            @select="removeOption"
+            name="Peněz na studenta a rok"
+            :data="selected"
+            :property="
+              item => {
+                return item.total / 10 / item.students;
+              }
+            "
+          />
         </v-row>
         <h1 v-else>
-          Vyhledejte školu, fakultu nebo obor v políčku výše...
-        </h1> </v-row
-      >;
+          Vyhledejte školu nebo fakultu v políčku výše...
+        </h1>
+      </v-row>
     </v-container>
   </v-content>
 </template>

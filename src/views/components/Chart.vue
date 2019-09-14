@@ -56,7 +56,10 @@ export default {
       let maxValue;
       for (let ico in this.data) {
         let school = this.data[ico];
-        let value = school[this.property];
+
+        let value;
+        if (typeof this.property === "function") value = this.property(school);
+        else value = school[this.property];
 
         let name = school.name;
 

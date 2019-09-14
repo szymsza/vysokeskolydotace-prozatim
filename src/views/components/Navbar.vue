@@ -16,7 +16,7 @@
       :append-icon="null"
       :label="
         Object.keys(selected).length < 15
-          ? 'Vyhledat školu, fakultu nebo obor'
+          ? 'Vyhledat školu nebo fakultu'
           : 'Porovnávat lze maximálně 15 položek'
       "
       clearable
