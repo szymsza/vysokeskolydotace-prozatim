@@ -30,7 +30,7 @@ import Statistics from "./components/Statistics";
 export default {
   components: { Statistics, Navbar, MainContent },
   data: () => ({
-    loading: 2,
+    loading: true,
     selected: {},
     schools: {},
     faculties: {},
@@ -38,25 +38,26 @@ export default {
   }),
   created() {
     // Schools
-    this.axios("https://api.myjson.com/bins/i416t").then(res => {
+    this.axios("https://api.myjson.com/bins/b0z39").then(res => {
       this.schools = res.data;
-      this.loading--;
-    });
 
-    // Faculties
-    this.axios("https://api.myjson.com/bins/nxnhh").then(res => {
-      this.faculties = res.data;
+      // Faculties
+      this.axios("https://api.myjson.com/bins/nxnhh").then(res => {
+        this.faculties = res.data;
 
-      // Assign faculties to schools
-      for (let orjk in this.faculties) {
-        let faculty = this.faculties[orjk];
-        let ico = parseInt(faculty.school_ico);
-        if (!this.schools[ico].faculties) this.schools[ico].faculties = {};
+        // Assign faculties to schools
+        for (let orjk in this.faculties) {
+          let faculty = this.faculties[orjk];
+          let ico = parseInt(faculty.school_ico);
+          if (this.schools[ico]) {
+            if (!this.schools[ico].faculties) this.schools[ico].faculties = {};
 
-        this.schools[ico].faculties[orjk] = faculty;
-      }
+            this.schools[ico].faculties[orjk] = faculty;
+          } else this.$delete(this.faculties, orjk);
+        }
 
-      this.loading--;
+        this.loading = false;
+      });
     });
   },
   methods: {
