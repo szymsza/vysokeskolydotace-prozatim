@@ -13,7 +13,8 @@ export default {
     name: String,
     property: [String, Function],
     data: Object,
-    width: Number
+    width: Number,
+    yLabel: String
   },
   data() {
     return {
@@ -104,6 +105,7 @@ export default {
         height: 500,
         legend: { position: "none" },
         vAxis: {
+          title: this.yLabel,
           scaleType: minValue * 5 < maxValue && maxValue > 100 ? "log" : null,
           viewWindow: {
             min: 0

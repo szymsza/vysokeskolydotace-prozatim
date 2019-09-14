@@ -11,12 +11,14 @@
             name="Počet projektů celkem"
             :data="selected"
             property="projects"
+            yLabel="celkem / 10 let"
           />
           <chart
             @select="removeOption"
-            name="Peníze z projektů celkem (tis. Kč)"
+            name="Peníze z projektů celkem"
             :data="selected"
             property="total"
+            yLabel="v tisících Kč / 10 let"
           />
           <chart
             @select="removeOption"
@@ -28,6 +30,7 @@
                 return item.total / 10 / item.students;
               }
             "
+            yLabel="v tisíčích Kč / rok"
           />
         </v-row>
         <h1 v-else>
