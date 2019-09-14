@@ -38,6 +38,12 @@
             yLabel="v tisících Kč / 10 let"
           />
         </div>
+        <div class="col-12" align="center" justify="center">
+          <div class="col" ref="chart-parent">
+            <h1 class="col-12 text-center">Investice dle oborů</h1>
+            <v-card id="piechartSobory" style="height: 500px"></v-card>
+          </div>
+        </div>
       </v-row>
     </v-container>
   </v-content>
@@ -45,6 +51,7 @@
 
 <script>
 import Chart from "./Chart";
+import { GoogleCharts } from "google-charts";
 
 export default {
   name: "Statistics.vue",
@@ -121,7 +128,45 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    GoogleCharts.api.charts.load("current", { packages: ["corechart"] });
+    GoogleCharts.api.charts.setOnLoadCallback(this.drawChart);
+  },
+  methods: {
+    drawChart() {
+      // eslint-disable-next-line
+        let formatter = new google.visualization.NumberFormat({
+        decimalSymbol: ",",
+        groupingSymbol: " ",
+        fractionDigits: 0
+      });
+
+      var data = GoogleCharts.api.visualization.arrayToDataTable([
+        ["Oblast", "Kč v tis."],
+        ["Průmysl", 27070555],
+        ["Biovědy", 12859847],
+        ["Chemie", 15033307],
+        ["Fyzika a matematika", 8593986],
+        ["Vědy o zemi", 5796824],
+        ["Informatika", 7526536],
+        ["Společenské vědy", 5865502],
+        ["Lékařské vědy", 5865502],
+        ["Vojenství", 299182]
+      ]);
+
+      var options = {
+        is3D: false,
+        title: "v Kč / 10 letech"
+      };
+
+      formatter.format(data, 1);
+
+      var chart = new GoogleCharts.api.visualization.PieChart(
+        document.getElementById("piechartSobory")
+      );
+      chart.draw(data, options);
+    }
+  }
 };
 </script>
 
