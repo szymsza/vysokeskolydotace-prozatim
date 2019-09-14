@@ -2,10 +2,12 @@
   <v-content>
     <v-container class="fill-height" fluid>
       <v-row>
-        <v-row align="center" justify="center">
+        <div class="col-12" align="center" justify="center">
           <chart
             name="Úspěšnost projektů (dle TAČRu)"
             :data="tacrChartData"
+            :width="100"
+            yLabel="v procentech"
             :property="
               item => {
                 return (
@@ -17,7 +19,24 @@
               }
             "
           />
-        </v-row>
+        </div>
+        <div class="col-12" align="center" justify="center">
+          <chart
+            name="Počet projektů na školu"
+            :data="byProjectChartData"
+            :width="100"
+            property="projects"
+          />
+        </div>
+        <div class="col-12" align="center" justify="center">
+          <chart
+            name="Finance z projektů na školu"
+            :data="byMoneyChartData"
+            :width="100"
+            property="total"
+            yLabel="v tis. Kč"
+          />
+        </div>
       </v-row>
     </v-container>
   </v-content>
@@ -34,10 +53,13 @@ export default {
     faculties: Object
   },
   data: () => ({
-    tacrChartData: []
+    tacrChartData: {},
+    byProjectChartData: {},
+    byMoneyChartData: {}
   }),
   created() {
     let schools = this.schools;
+    //TACR data
     let tacrStats = [];
     for (let i in schools) {
       if (schools[i]["tacr_fail"] + schools[i]["tacr_success"] > 10)
@@ -57,12 +79,46 @@ export default {
               (schools[j]["tacr_fail"] + schools[j]["tacr_success"]) ===
             tacrStats[i]
           ) {
-            this.tacrChartData.push(schools[j]);
+            this.tacrChartData[Object.keys(this.tacrChartData).length] =
+              schools[j];
           }
         }
       }
     }
-    console.log(this.tacrChartData);
+
+    //top #5 projects
+    let schoolStats = [];
+    for (let i in schools) {
+      schoolStats.push(schools[i]["projects"]);
+    }
+    schoolStats = schoolStats.sort(function(a, b) {
+      return b - a;
+    });
+    for (let i = 0; i < 5; i++) {
+      for (let j in schools) {
+        if (parseInt(schools[j]["projects"]) === parseInt(schoolStats[i])) {
+          this.byProjectChartData[Object.keys(this.byProjectChartData).length] =
+            schools[j];
+        }
+      }
+    }
+
+    //top #5 money
+    schoolStats = [];
+    for (let i in schools) {
+      schoolStats.push(schools[i]["total"]);
+    }
+    schoolStats = schoolStats.sort(function(a, b) {
+      return b - a;
+    });
+    for (let i = 0; i < 5; i++) {
+      for (let j in schools) {
+        if (parseInt(schools[j]["total"]) === parseInt(schoolStats[i])) {
+          this.byMoneyChartData[Object.keys(this.byMoneyChartData).length] =
+            schools[j];
+        }
+      }
+    }
   },
   mounted() {}
 };
