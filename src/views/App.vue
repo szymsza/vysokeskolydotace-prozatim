@@ -2,10 +2,12 @@
   <v-app id="inspire">
     <navbar
       @select-option="selectOption"
+      @toggle-statistics="showStatistics = !showStatistics"
       :schools="schools"
       :selected="selected"
     />
-    <main-content :selected="selected" @remove-option="removeOption" />
+    <statistics v-if="showStatistics" />
+    <main-content v-else :selected="selected" @remove-option="removeOption" />
     <v-overlay :value="loading" color="grey lighten-2" :opacity="1">
       <v-progress-circular
         indeterminate
@@ -19,12 +21,14 @@
 <script>
 import MainContent from "./components/MainContent";
 import Navbar from "./components/Navbar";
+import Statistics from "./components/Statistics";
 export default {
-  components: { Navbar, MainContent },
+  components: { Statistics, Navbar, MainContent },
   data: () => ({
     loading: true,
     selected: {},
-    schools: {}
+    schools: {},
+    showStatistics: false
   }),
   created() {
     this.axios("https://api.myjson.com/bins/1f9ut9").then(res => {

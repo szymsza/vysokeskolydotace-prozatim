@@ -6,7 +6,7 @@
     dark
   >
     <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-      <span class="hidden-sm-and-down">Vysoké školy</span>
+      <span class="hidden-sm-and-down">Kam za vědou</span>
     </v-toolbar-title>
 
     <v-autocomplete
@@ -40,7 +40,7 @@
     </v-autocomplete>
 
     <div class="flex-grow-1"></div>
-    <v-btn icon>
+    <v-btn icon @click="$emit('toggle-statistics')">
       <v-icon>mdi-chart-bar</v-icon>
     </v-btn>
   </v-app-bar>
