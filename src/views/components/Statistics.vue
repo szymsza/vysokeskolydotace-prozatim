@@ -7,7 +7,7 @@
             name="Úspěšnost projektů (dle TAČRu)"
             :data="tacrChartData"
             :width="100"
-            ylabel="v procentech"
+            yLabel="v procentech"
             :property="
               item => {
                 return (
@@ -22,10 +22,19 @@
         </div>
         <div class="col-12" align="center" justify="center">
           <chart
-            name="Počet projektů"
+            name="Počet projektů na školu"
             :data="byProjectChartData"
             :width="100"
             property="projects"
+          />
+        </div>
+        <div class="col-12" align="center" justify="center">
+          <chart
+            name="Finance z projektů na školu"
+            :data="byMoneyChartData"
+            :width="100"
+            property="total"
+            yLabel="v tis. Kč"
           />
         </div>
       </v-row>
@@ -45,7 +54,8 @@ export default {
   },
   data: () => ({
     tacrChartData: {},
-    byProjectChartData: {}
+    byProjectChartData: {},
+    byMoneyChartData: {}
   }),
   created() {
     let schools = this.schools;
@@ -76,7 +86,7 @@ export default {
       }
     }
 
-    //top #5
+    //top #5 projects
     let schoolStats = [];
     for (let i in schools) {
       schoolStats.push(schools[i]["projects"]);
@@ -88,6 +98,23 @@ export default {
       for (let j in schools) {
         if (parseInt(schools[j]["projects"]) === parseInt(schoolStats[i])) {
           this.byProjectChartData[Object.keys(this.byProjectChartData).length] =
+            schools[j];
+        }
+      }
+    }
+
+    //top #5 money
+    schoolStats = [];
+    for (let i in schools) {
+      schoolStats.push(schools[i]["total"]);
+    }
+    schoolStats = schoolStats.sort(function(a, b) {
+      return b - a;
+    });
+    for (let i = 0; i < 5; i++) {
+      for (let j in schools) {
+        if (parseInt(schools[j]["total"]) === parseInt(schoolStats[i])) {
+          this.byMoneyChartData[Object.keys(this.byMoneyChartData).length] =
             schools[j];
         }
       }
