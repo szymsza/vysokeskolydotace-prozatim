@@ -56,8 +56,16 @@ export default {
       let maxValue;
       for (let ico in this.data) {
         let school = this.data[ico];
-        let value = school[this.property];
-        table.push([school.name, value, colors[i++], ico]);
+
+        let value;
+        if (typeof this.property === "function") value = this.property(school);
+        else value = school[this.property];
+
+        let name = school.name;
+
+        if (school.orjk) name += " (" + school.school_name + ")";
+
+        table.push([name, value, colors[i++], ico]);
 
         if (value < minValue || !minValue) minValue = value;
 
@@ -92,7 +100,7 @@ export default {
         height: 500,
         legend: { position: "none" },
         vAxis: {
-          scaleType: minValue * 3 < maxValue && maxValue > 100 ? "log" : null,
+          scaleType: minValue * 5 < maxValue && maxValue > 100 ? "log" : null,
           viewWindow: {
             min: 0
           }
