@@ -1,6 +1,10 @@
 <template>
   <v-app id="inspire">
-    <navbar @select-option="selectOption" :selected="selected" />
+    <navbar
+      @select-option="selectOption"
+      :schools="schools"
+      :selected="selected"
+    />
     <main-content :selected="selected" />
     <v-overlay :value="loading" color="grey lighten-2" :opacity="1">
       <v-progress-circular
@@ -19,16 +23,18 @@ export default {
   components: { Navbar, MainContent },
   data: () => ({
     loading: true,
-    selected: []
+    selected: {},
+    schools: {}
   }),
   created() {
-    setTimeout(() => {
+    this.axios("https://api.myjson.com/bins/1f9ut9").then(res => {
+      this.schools = res.data;
       this.loading = false;
-    }, 1000);
+    });
   },
   methods: {
     selectOption(option) {
-      this.selected.push(option);
+      this.$set(this.selected, option.ico, option);
     }
   }
 };

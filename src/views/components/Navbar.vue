@@ -20,9 +20,11 @@
       solo-inverted
       prepend-inner-icon="search"
       no-data-text="Nic nenalezeno"
+      item-text="name"
+      :item-value="item => item"
     >
       <template v-slot:item="{ index, item }">
-        {{ item }}
+        {{ item.name }}
         <div class="flex-grow-1"></div>
         <v-list-item-action @click.stop>
           <v-btn icon @click.stop.prevent="showChildren(item)">
@@ -43,22 +45,11 @@
 export default {
   name: "Navbar",
   props: {
-    selected: Array
+    selected: Object,
+    schools: Object
   },
   data: () => ({
-    autocomplete: null,
-    allOptions: [
-      "Autocompletes",
-      "Comboboxes",
-      "Forms",
-      "Inputs",
-      "Overflow Buttons",
-      "Selects",
-      "Selection Controls",
-      "Sliders",
-      "Textareas",
-      "Text Fields"
-    ]
+    autocomplete: null
   }),
 
   methods: {
@@ -77,9 +68,11 @@ export default {
 
   computed: {
     autocompleteOptions() {
-      return this.allOptions.filter(item => {
-        return !this.selected.includes(item);
-      });
+      let result = [];
+      for (let ico in this.schools)
+        if (!this.selected[ico]) result.push(this.schools[ico]);
+
+      return result;
     }
   }
 };
