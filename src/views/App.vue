@@ -42,7 +42,7 @@ export default {
       this.schools = res.data;
 
       // Faculties
-      this.axios("https://api.myjson.com/bins/nxnhh").then(res => {
+      this.axios("https://api.myjson.com/bins/drs6t").then(res => {
         this.faculties = res.data;
 
         // Assign faculties to schools
