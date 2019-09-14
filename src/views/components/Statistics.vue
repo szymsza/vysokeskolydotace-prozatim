@@ -7,7 +7,7 @@
             name="Úspěšnost projektů (dle TAČRu)"
             :data="tacrChartData"
             :width="100"
-            yLabel="v procentech"
+            yLabel="v procentech / 10 let"
             :property="
               item => {
                 return (
@@ -26,6 +26,7 @@
             :data="byProjectChartData"
             :width="100"
             property="projects"
+            yLabel="celkem / 10 let"
           />
         </div>
         <div class="col-12" align="center" justify="center">
@@ -34,7 +35,7 @@
             :data="byMoneyChartData"
             :width="100"
             property="total"
-            yLabel="v tis. Kč"
+            yLabel="v tisících Kč / 10 let"
           />
         </div>
       </v-row>
