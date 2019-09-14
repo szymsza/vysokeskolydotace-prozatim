@@ -52,7 +52,7 @@
     </v-autocomplete>
 
     <div class="flex-grow-1"></div>
-    <v-btn icon @click="$emit('toggle-statistics')">
+    <v-btn icon @click="$emit('toggle-statistics')" title="Přehled statistik">
       <v-icon>mdi-chart-bar</v-icon>
     </v-btn>
   </v-app-bar>
