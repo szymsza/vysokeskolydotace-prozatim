@@ -31,9 +31,13 @@
       <template v-slot:item="{ index, item }">
         {{ item.name }}
         <div class="flex-grow-1"></div>
-        <v-list-item-action @click.stop>
-          <v-btn icon @click.stop.prevent="showChildren(item)">
-            <v-icon>mdi-chevron-down</v-icon>
+        <v-list-item-action @click.stop v-if="item.faculties">
+          <v-btn icon @click.stop.prevent="toggleChildren(item)">
+            <v-icon
+              >mdi-chevron-{{
+                item.ico === visibleFaculties ? "up" : "down"
+              }}</v-icon
+            >
           </v-btn>
         </v-list-item-action>
       </template>
@@ -51,15 +55,20 @@ export default {
   name: "Navbar",
   props: {
     selected: Object,
-    schools: Object
+    schools: Object,
+    faculties: Object
   },
   data: () => ({
-    autocomplete: null
+    autocomplete: null,
+    visibleFaculties: null
   }),
 
   methods: {
-    showChildren(item) {
-      console.log("Show children of ", item);
+    toggleChildren(item) {
+      let ico = item.ico;
+
+      if (this.visibleFaculties === ico) this.visibleFaculties = null;
+      else this.visibleFaculties = ico;
     },
     autocompleteSelected(value) {
       if (value) {
@@ -74,8 +83,12 @@ export default {
   computed: {
     autocompleteOptions() {
       let result = [];
-      for (let ico in this.schools)
-        if (!this.selected[ico]) result.push(this.schools[ico]);
+      for (let ico in this.schools) {
+        let school = this.schools[ico];
+        if (!this.selected[ico]) result.push(school);
+        if (this.visibleFaculties === ico)
+          result.push({ name: "- Jsem fakulta" });
+      }
 
       return result;
     }

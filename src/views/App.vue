@@ -3,6 +3,7 @@
     <navbar
       @select-option="selectOption"
       :schools="schools"
+      :faculties="faculties"
       :selected="selected"
     />
     <main-content :selected="selected" @remove-option="removeOption" />
@@ -22,14 +23,32 @@ import Navbar from "./components/Navbar";
 export default {
   components: { Navbar, MainContent },
   data: () => ({
-    loading: true,
+    loading: 2,
     selected: {},
-    schools: {}
+    schools: {},
+    faculties: {}
   }),
   created() {
+    // Schools
     this.axios("https://api.myjson.com/bins/1f9ut9").then(res => {
       this.schools = res.data;
-      this.loading = false;
+      this.loading--;
+    });
+
+    // Faculties
+    this.axios("https://api.myjson.com/bins/bptdp").then(res => {
+      this.faculties = res.data;
+
+      // Assign faculties to schools
+      for (let orjk in this.faculties) {
+        let faculty = this.faculties[orjk];
+        let ico = parseInt(faculty.school_ico);
+        if (!this.schools[ico].faculties) this.schools[ico].faculties = {};
+
+        this.schools[ico].faculties[orjk] = faculty;
+      }
+
+      this.loading--;
     });
   },
   methods: {
