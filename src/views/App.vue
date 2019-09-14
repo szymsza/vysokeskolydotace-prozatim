@@ -5,7 +5,7 @@
       :schools="schools"
       :selected="selected"
     />
-    <main-content :selected="selected" />
+    <main-content :selected="selected" @remove-option="removeOption" />
     <v-overlay :value="loading" color="grey lighten-2" :opacity="1">
       <v-progress-circular
         indeterminate
@@ -34,7 +34,12 @@ export default {
   },
   methods: {
     selectOption(option) {
+      if (Object.keys(this.selected).length >= 15) return false;
+
       this.$set(this.selected, option.ico, option);
+    },
+    removeOption(ico) {
+      this.$delete(this.selected, ico);
     }
   }
 };

@@ -13,7 +13,11 @@
       v-model="autocomplete"
       @input="autocompleteSelected"
       :append-icon="null"
-      label="Vyhledat školu, fakultu nebo obor"
+      :label="
+        Object.keys(selected).length < 15
+          ? 'Vyhledat školu, fakultu nebo obor'
+          : 'Porovnávat lze maximálně 15 položek'
+      "
       clearable
       :items="autocompleteOptions"
       flat
@@ -22,6 +26,7 @@
       no-data-text="Nic nenalezeno"
       item-text="name"
       :item-value="item => item"
+      :disabled="Object.keys(selected).length >= 15"
     >
       <template v-slot:item="{ index, item }">
         {{ item.name }}

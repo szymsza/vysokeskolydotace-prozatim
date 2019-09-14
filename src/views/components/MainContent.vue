@@ -27,12 +27,35 @@ export default {
     GoogleCharts.load(this.drawChart, { packages: ["bar"] });
   },
   methods: {
+    optionSelected(chart, data) {
+      let item = chart.getSelection()[0];
+      let rowObject = data.wg[item.row];
+      let ico = rowObject.c[3].v;
+
+      this.$emit("remove-option", ico);
+    },
     drawChart() {
       if (!Object.keys(this.selected).length) return;
 
-      let data = [["Škola", "Počet projektů", { role: "style" }]];
+      let data = [["Škola", "Počet projektů", { role: "style" }, " "]];
 
-      let colors = ["#1565C0", "#F44336", "#FFC107", "#4CAF50", "#9C27B0"];
+      let colors = [
+        "#1565C0",
+        "#F44336",
+        "#FFC107",
+        "#1B5E20",
+        "#9C27B0",
+        "#4E342E",
+        "#29B6F6",
+        "#FF4081",
+        "#8BC34A",
+        "#EF6C00",
+        "#37474F",
+        "#000000",
+        "#BDBDBD",
+        "#76FF03",
+        "#F8BBD0"
+      ];
 
       let i = 0;
       let minValue;
@@ -40,7 +63,7 @@ export default {
       for (let ico in this.selected) {
         let school = this.selected[ico];
         let value = school.projects;
-        data.push([school.name, value, colors[i++]]);
+        data.push([school.name, value, colors[i++], ico]);
 
         if (value < minValue || !minValue) minValue = value;
 
@@ -56,6 +79,7 @@ export default {
 
       data = GoogleCharts.api.visualization.arrayToDataTable(data);
       formatter.format(data, 1);
+
       var view = new GoogleCharts.api.visualization.DataView(data);
       view.setColumns([
         0,
@@ -74,9 +98,11 @@ export default {
         height: 500,
         legend: { position: "none" },
         vAxis: {
-          scaleType: minValue * 3 < maxValue && maxValue > 100 ? "log" : null
+          scaleType: minValue * 3 < maxValue && maxValue > 100 ? "log" : null,
+          viewWindow: {
+            min: 0
+          }
         },
-        hAxis: { minValue: 100 },
         bar: { groupWidth: "90%" },
         theme: "material",
         tooltip: {
@@ -89,6 +115,10 @@ export default {
       );
 
       chart.draw(view, options);
+
+      GoogleCharts.api.visualization.events.addListener(chart, "select", () => {
+        this.optionSelected(chart, data);
+      });
     }
   },
   watch: {
