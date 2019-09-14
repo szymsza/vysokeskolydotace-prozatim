@@ -11,6 +11,7 @@
 
     <v-autocomplete
       v-model="autocomplete"
+      :search-input.sync="autocompleteCurrentValue"
       @input="autocompleteSelected"
       :append-icon="null"
       :label="
@@ -29,7 +30,16 @@
       :disabled="Object.keys(selected).length >= 15"
     >
       <template v-slot:item="{ index, item }">
-        {{ item.name }}
+        <span v-if="item.isChild" class="faculty-item">
+          {{ item.name }}
+        </span>
+        <template v-else-if="item.orjk">
+          {{ item.name }}
+          <span class="faculty-school">({{ item.school_name }})</span>
+        </template>
+        <template v-else>
+          {{ item.name }}
+        </template>
         <div class="flex-grow-1"></div>
         <v-list-item-action @click.stop v-if="item.faculties">
           <v-btn icon @click.stop.prevent="toggleChildren(item)">
@@ -60,6 +70,7 @@ export default {
   },
   data: () => ({
     autocomplete: null,
+    autocompleteCurrentValue: null,
     visibleFaculties: null
   }),
 
@@ -87,10 +98,24 @@ export default {
         let school = this.schools[ico];
         if (!this.selected[ico]) result.push(school);
         if (this.visibleFaculties === ico)
-          result.push({ name: "- Jsem fakulta" });
+          for (let orjk in school.faculties)
+            result.push(
+              Object.assign({ isChild: true }, school.faculties[orjk])
+            );
       }
 
+      if (this.autocompleteCurrentValue)
+        for (let orjk in this.faculties) {
+          result.push(this.faculties[orjk]);
+        }
+
       return result;
+    }
+  },
+
+  watch: {
+    autocompleteCurrentValue() {
+      this.visibleFaculties = null;
     }
   }
 };
