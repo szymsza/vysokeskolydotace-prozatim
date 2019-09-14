@@ -9,46 +9,28 @@
       <span class="hidden-sm-and-down">Vysoké školy</span>
     </v-toolbar-title>
 
-    <v-combobox
-      v-model="model"
-      :filter="filter"
-      :hide-no-data="true"
-      :items="items"
-      :search-input.sync="search"
-      hide-selected
+    <v-autocomplete
+      v-model="autocomplete"
+      @input="autocompleteSelected"
       :append-icon="null"
-      label="Search for an option"
+      label="Vyhledat školu, fakultu nebo obor"
       clearable
-      multiple
+      :items="autocompleteOptions"
       flat
       solo-inverted
       prepend-inner-icon="search"
+      no-data-text="Nic nenalezeno"
     >
-      <template v-slot:selection="{ attrs, item, parent, selected }">
-        <v-chip
-          v-if="item === Object(item)"
-          v-bind="attrs"
-          :color="`${item.color} lighten-3`"
-          :input-value="selected"
-          label
-          small
-        >
-          <span class="pr-2">
-            {{ item.text }}
-          </span>
-          <v-icon small @click="parent.selectItem(item)">close</v-icon>
-        </v-chip>
-      </template>
       <template v-slot:item="{ index, item }">
-        {{ item.text }}
+        {{ item }}
         <div class="flex-grow-1"></div>
         <v-list-item-action @click.stop>
-          <v-btn icon @click.stop.prevent="edit(index, item)">
+          <v-btn icon @click.stop.prevent="showChildren(item)">
             <v-icon>mdi-chevron-down</v-icon>
           </v-btn>
         </v-list-item-action>
       </template>
-    </v-combobox>
+    </v-autocomplete>
 
     <div class="flex-grow-1"></div>
     <v-btn icon>
@@ -60,79 +42,44 @@
 <script>
 export default {
   name: "Navbar",
+  props: {
+    selected: Array
+  },
   data: () => ({
-    activator: null,
-    attach: null,
-    editing: null,
-    index: -1,
-    items: [
-      {
-        text: "Foo",
-        color: "blue"
-      },
-      {
-        text: "Bar",
-        color: "red"
-      }
-    ],
-    nonce: 1,
-    menu: false,
-    model: [
-      {
-        text: "Foo",
-        color: "blue"
-      }
-    ],
-    x: 0,
-    search: null,
-    y: 0
+    autocomplete: null,
+    allOptions: [
+      "Autocompletes",
+      "Comboboxes",
+      "Forms",
+      "Inputs",
+      "Overflow Buttons",
+      "Selects",
+      "Selection Controls",
+      "Sliders",
+      "Textareas",
+      "Text Fields"
+    ]
   }),
 
-  watch: {
-    model(val, prev) {
-      if (val.length === prev.length) return;
-
-      this.model = val.map(v => {
-        if (typeof v === "string") {
-          v = {
-            text: v,
-            color: "red"
-          };
-
-          this.items.push(v);
-
-          this.nonce++;
-        }
-
-        return v;
-      });
+  methods: {
+    showChildren(item) {
+      console.log("Show children of ", item);
+    },
+    autocompleteSelected(value) {
+      if (value) {
+        this.$emit("select-option", value);
+        this.$nextTick(() => {
+          this.autocomplete = null;
+        });
+      }
     }
   },
 
-  methods: {
-    edit(index, item) {
-      if (!this.editing) {
-        this.editing = item;
-        this.index = index;
-      } else {
-        this.editing = null;
-        this.index = -1;
-      }
-    },
-    filter(item, queryText, itemText) {
-      if (item.header) return false;
-
-      const hasValue = val => (val != null ? val : "");
-
-      const text = hasValue(itemText);
-      const query = hasValue(queryText);
-
-      return (
-        text
-          .toString()
-          .toLowerCase()
-          .indexOf(query.toString().toLowerCase()) > -1
-      );
+  computed: {
+    autocompleteOptions() {
+      return this.allOptions.filter(item => {
+        return !this.selected.includes(item);
+      });
     }
   }
 };

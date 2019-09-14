@@ -1,7 +1,8 @@
 <template>
   <v-app id="inspire">
-    <navbar />
+    <navbar @select-option="selectOption" :selected="selected" />
     <main-content />
+    {{ selected }}
     <v-overlay :value="loading" color="grey lighten-2" :opacity="1">
       <v-progress-circular
         indeterminate
@@ -18,12 +19,18 @@ import Navbar from "./components/Navbar";
 export default {
   components: { Navbar, MainContent },
   data: () => ({
-    loading: true
+    loading: true,
+    selected: []
   }),
   created() {
     setTimeout(() => {
       this.loading = false;
     }, 1000);
+  },
+  methods: {
+    selectOption(option) {
+      this.selected.push(option);
+    }
   }
 };
 </script>

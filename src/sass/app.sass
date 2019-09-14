@@ -1,10 +1,10 @@
 .v-input
 	&.v-input--is-focused
-		.v-icon, .v-text-field__slot input
+		.v-icon, .v-select__slot input
 			color: rgba(0, 0, 0, 0.87) !important
 			caret-color: rgba(0, 0, 0, 0.87) !important
 
-		.v-text-field__slot label
+		.v-select__slot label
 			color: rgba(0, 0, 0, .3) !important
 
 div[role=combobox]
@@ -12,3 +12,8 @@ div[role=combobox]
 
 	+ .v-text-field__details
 		display: none
+
+.v-autocomplete__content
+	.v-list-item
+		.v-list-item__action
+			margin: 0
