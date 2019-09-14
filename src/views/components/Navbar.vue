@@ -44,10 +44,8 @@
         <v-list-item-action @click.stop v-if="item.faculties">
           <v-btn icon @click.stop.prevent="toggleChildren(item)">
             <v-icon
-              >mdi-chevron-{{
-                item.ico === visibleFaculties ? "up" : "down"
-              }}</v-icon
-            >
+              >mdi-chevron-{{ item.ico === visibleFaculties ? "up" : "down" }}
+            </v-icon>
           </v-btn>
         </v-list-item-action>
       </template>
@@ -88,15 +86,28 @@ export default {
           this.autocomplete = null;
         });
       }
+    },
+    sortArray(a, b) {
+      let aN = a.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      let bN = b.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (aN < bN) return -1;
+      if (aN > bN) return 1;
+      return 0;
     }
   },
 
   computed: {
     autocompleteOptions() {
       let result = [];
-      for (let ico in this.schools) {
-        let school = this.schools[ico];
+
+      // Push schools that were not selected yet
+      let schoolsArray = Object.values(this.schools).sort(this.sortArray);
+      for (let index in schoolsArray) {
+        let school = schoolsArray[index];
+        let ico = school.ico;
         if (!this.selected[ico]) result.push(school);
+
+        // School is visible -> push its faculties
         if (this.visibleFaculties === ico)
           for (let orjk in school.faculties)
             result.push(
@@ -104,10 +115,13 @@ export default {
             );
       }
 
-      if (this.autocompleteCurrentValue)
-        for (let orjk in this.faculties) {
-          result.push(this.faculties[orjk]);
-        }
+      // Push all faculties if search is in progress
+      if (this.autocompleteCurrentValue) {
+        let facultiesArray = Object.values(this.faculties).sort(this.sortArray);
+        for (let index in facultiesArray)
+          if (!this.selected[facultiesArray[index].orjk])
+            result.push(facultiesArray[index]);
+      }
 
       return result;
     }

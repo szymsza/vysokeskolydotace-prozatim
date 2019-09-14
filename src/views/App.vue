@@ -44,7 +44,7 @@ export default {
     });
 
     // Faculties
-    this.axios("https://api.myjson.com/bins/bptdp").then(res => {
+    this.axios("https://api.myjson.com/bins/nxnhh").then(res => {
       this.faculties = res.data;
 
       // Assign faculties to schools
@@ -64,7 +64,9 @@ export default {
       this.showStatistics = false;
       if (Object.keys(this.selected).length >= 15) return false;
 
-      this.$set(this.selected, option.ico, option);
+      let key = option.ico ? option.ico : option.orjk;
+
+      this.$set(this.selected, key, option);
     },
     removeOption(ico) {
       this.$delete(this.selected, ico);
