@@ -41,7 +41,7 @@
 
     <div class="flex-grow-1"></div>
     <v-btn icon>
-      <v-icon>mdi-information-outline</v-icon>
+      <v-icon>mdi-chart-bar</v-icon>
     </v-btn>
   </v-app-bar>
 </template>
