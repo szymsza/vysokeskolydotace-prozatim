@@ -129,13 +129,15 @@ export default {
     }
   },
   mounted() {
-    GoogleCharts.api.charts.load("current", { packages: ["corechart"] });
-    GoogleCharts.api.charts.setOnLoadCallback(this.drawChart);
+    setTimeout(() => {
+      GoogleCharts.api.charts.load("current", { packages: ["corechart"] });
+      GoogleCharts.api.charts.setOnLoadCallback(this.drawChart);
+    }, 2000);
   },
   methods: {
     drawChart() {
       // eslint-disable-next-line
-        let formatter = new google.visualization.NumberFormat({
+        let formatter =  new GoogleCharts.api.visualization.NumberFormat({
         decimalSymbol: ",",
         groupingSymbol: " ",
         fractionDigits: 0
