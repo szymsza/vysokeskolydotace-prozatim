@@ -32,7 +32,7 @@
           />
         </v-row>
         <h1 v-else>
-          Vyhledejte školu, fakultu nebo obor v políčku výše
+          Vyhledejte školu, fakultu nebo obor v políčku výše...
         </h1>
       </v-row>
     </v-container>
